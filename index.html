@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1024" />
+  <meta name="description" content="Super Coin Jump — a 2D platformer where every coin makes you jump higher. Playable on phone, tablet and desktop." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Super Coin Jump</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="game" aria-label="Super Coin Jump game screen" role="img"></canvas>
+
+    <div id="hud" class="hud hidden" aria-hidden="true">
+      <div class="hud-bar">
+        <div class="hud-left">
+          <div id="hearts" class="hearts" aria-label="Health"></div>
+          <div class="jump-shell">
+            <div class="jump-top">
+              <span class="jump-word">JUMP</span>
+              <b id="jumpMult">×1.0</b>
+            </div>
+            <div class="jump-bar"><div id="jumpFill" class="jump-fill"></div></div>
+          </div>
+        </div>
+
+        <div class="hud-center">
+          <div class="level-chip">
+            <span id="worldLabel">WORLD 1-1</span>
+            <b id="levelName">Mushroom Meadow</b>
+          </div>
+        </div>
+
+        <div class="hud-right">
+          <div class="coin-chip" aria-label="Coins collected">
+            <span class="coin-dot"></span>
+            <b id="coinHud">0</b>
+            <span id="coinTotal" class="coin-total">/ 40</span>
+          </div>
+          <div id="timeHud" class="time-chip">0:00</div>
+          <button id="soundBtn" class="round-btn" type="button" aria-label="Mute sound" aria-pressed="false">
+            <svg class="icon-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.2L12 5.6v12.8L7.2 14.5H4z" fill="currentColor"/><path d="M15.4 8.4a5 5 0 0 1 0 7.2M17.9 5.9a8.5 8.5 0 0 1 0 12.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path class="mute-slash" d="M4.5 4.5l15 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </button>
+          <button id="pauseBtn" class="round-btn" type="button" aria-label="Pause game">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4.5" width="4.2" height="15" rx="1.4" fill="currentColor"/><rect x="13.8" y="4.5" width="4.2" height="15" rx="1.4" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="touch" class="touch hidden" aria-hidden="true">
+      <div class="touch-move">
+        <button class="tbtn move" type="button" data-act="left" aria-label="Move left">
+          <span class="chev left"></span>
+        </button>
+        <button class="tbtn move" type="button" data-act="right" aria-label="Move right">
+          <span class="chev right"></span>
+        </button>
+      </div>
+      <button class="tbtn jump" type="button" data-act="jump" aria-label="Jump">
+        <span class="jump-arrow"></span>
+        <span class="jump-text">JUMP</span>
+      </button>
+    </div>
+
+    <div id="banner" class="banner" aria-live="polite">
+      <span id="bannerKicker" class="banner-kicker">WORLD 1-1</span>
+      <b id="bannerTitle" class="banner-title">Mushroom Meadow</b>
+      <span id="bannerSub" class="banner-sub">Every coin boosts your jump!</span>
+    </div>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <section id="titleScreen" class="screen title-screen">
+      <div class="title-shade"></div>
+      <span class="drift-coin c1" aria-hidden="true"></span>
+      <span class="drift-coin c2" aria-hidden="true"></span>
+      <span class="drift-coin c3" aria-hidden="true"></span>
+      <span class="drift-coin c4" aria-hidden="true"></span>
+
+      <div class="title-content">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> A JUMP-POWERED PLATFORMER</div>
+        <h1 class="logo">
+          <span class="logo-super">SUPER</span>
+          <span class="logo-main">COIN <span class="logo-accent">JUMP</span></span>
+        </h1>
+        <p class="tagline">Every coin makes you jump <em>higher</em>.</p>
+
+        <button id="playBtn" class="btn btn-primary play-btn" type="button">
+          <span class="play-icon" aria-hidden="true"></span>
+          <span>PLAY</span>
+        </button>
+
+        <div class="how">
+          <div class="how-item"><span class="how-icon keys">← →</span><span><b>MOVE</b><small>or A / D</small></span></div>
+          <div class="how-item"><span class="how-icon space">␣</span><span><b>JUMP</b><small>or ↑ / W</small></span></div>
+          <div class="how-item"><span class="how-icon coin-ico"></span><span><b>COINS</b><small>boost your jump</small></span></div>
+        </div>
+
+        <div class="title-meta">
+          <span id="bestLine">No runs yet — be the first!</span>
+          <span class="dot-sep">•</span>
+          <span>Touch controls included</span>
+        </div>
+      </div>
+
+      <div class="title-footer">
+        <span>3 worlds</span><span class="dot-sep">•</span><span>290 coins</span><span class="dot-sep">•</span><span>Grab them all</span>
+      </div>
+    </section>
+
+    <section id="pauseScreen" class="screen overlay hidden">
+      <div class="panel">
+        <div class="panel-kicker">PAUSED</div>
+        <h2 class="panel-title">Take a breather</h2>
+        <div class="mini-stats">
+          <div><span>Coins</span><b id="pauseCoins">0</b></div>
+          <div><span>Jump</span><b id="pauseJump">×1.0</b></div>
+          <div><span>Hearts</span><b id="pauseHearts">♥♥♥</b></div>
+        </div>
+        <button id="resumeBtn" class="btn btn-primary wide" type="button">RESUME</button>
+        <div class="btn-row">
+          <button id="restartBtn" class="btn btn-ghost" type="button">RESTART LEVEL</button>
+          <button id="quitBtn" class="btn btn-ghost" type="button">QUIT</button>
+        </div>
+        <p class="panel-hint">Tip: wait to jump higher — release early for short hops.</p>
+      </div>
+    </section>
+
+    <section id="clearScreen" class="screen overlay hidden">
+      <div class="panel clear-panel">
+        <div class="medal" aria-hidden="true"><span>★</span></div>
+        <div class="panel-kicker">LEVEL CLEAR</div>
+        <h2 id="clearTitle" class="panel-title">Mushroom Meadow</h2>
+        <div class="result-grid">
+          <div><span>COINS</span><b id="clearCoins">0 / 0</b></div>
+          <div><span>TIME</span><b id="clearTime">0:00</b></div>
+          <div><span>FINAL JUMP</span><b id="clearJump">×1.0</b></div>
+        </div>
+        <p id="clearFlavor" class="panel-hint">Nice work!</p>
+        <button id="nextBtn" class="btn btn-primary wide" type="button">NEXT LEVEL</button>
+      </div>
+    </section>
+
+    <section id="gameoverScreen" class="screen overlay hidden">
+      <div class="panel over-panel">
+        <div class="skull" aria-hidden="true">✕</div>
+        <div class="panel-kicker">OUT OF HEARTS</div>
+        <h2 class="panel-title">Game Over</h2>
+        <p id="gameoverLine" class="panel-hint">The coins got the better of you.</p>
+        <div class="result-grid small">
+          <div><span>COINS</span><b id="overCoins">0</b></div>
+          <div><span>LEVEL</span><b id="overLevel">1-1</b></div>
+        </div>
+        <button id="retryBtn" class="btn btn-primary wide" type="button">TRY AGAIN</button>
+        <button id="overTitleBtn" class="btn btn-ghost wide" type="button">MAIN MENU</button>
+      </div>
+    </section>
+
+    <section id="winScreen" class="screen overlay hidden">
+      <div class="win-rays" aria-hidden="true"></div>
+      <div class="panel win-panel">
+        <div class="trophy" aria-hidden="true"><span>★</span></div>
+        <div class="panel-kicker">ALL WORLDS CLEARED</div>
+        <h2 class="panel-title win-title">You Win!</h2>
+        <p id="winFlavor" class="panel-hint">A legend of the skies.</p>
+        <div class="result-grid">
+          <div><span>COINS</span><b id="winCoins">0</b></div>
+          <div><span>TOTAL TIME</span><b id="winTime">0:00</b></div>
+          <div><span>BEST COMBO</span><b id="winBest">×1.0</b></div>
+        </div>
+        <div id="winBestLine" class="best-line"></div>
+        <button id="replayBtn" class="btn btn-primary wide" type="button">PLAY AGAIN</button>
+        <button id="winTitleBtn" class="btn btn-ghost wide" type="button">MAIN MENU</button>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

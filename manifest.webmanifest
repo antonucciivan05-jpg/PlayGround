@@ -1,0 +1,26 @@
+{
+  "name": "Super Coin Jump",
+  "short_name": "Coin Jump",
+  "description": "A 2D platformer where every coin makes you jump higher. Playable on phone, tablet and desktop.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#0b1024",
+  "theme_color": "#0b1024",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
